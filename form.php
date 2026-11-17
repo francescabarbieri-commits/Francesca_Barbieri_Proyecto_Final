@@ -127,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <nav class="navbar">
         <a id="loguito" href="index.php">
-            <img src="img/logo.png" alt="Logo del teatro" height="48">
+            <img src="img/logo.png" alt="Loguito" height="48">
         </a>
         <ul class="nav-links">
             <li><a href="index.php">Inicio</a></li>

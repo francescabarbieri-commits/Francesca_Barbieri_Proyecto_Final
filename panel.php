@@ -38,7 +38,7 @@ $esAdmin = ($_SESSION['usuario_rol'] ?? '') === 'admin';
     </div>
 
     <footer>
-        &copy; <?= date('Y') ?> Teatro. Todos los derechos reservados.
+        &copy; <?= date('Y') ?> Teatro de Francesca Barbieri.
     </footer>
 
 </body>

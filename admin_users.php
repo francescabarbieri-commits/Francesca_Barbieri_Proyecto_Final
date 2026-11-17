@@ -48,7 +48,6 @@ $token = csrfToken();
         </a>
         <ul class="nav-links">
             <li><a href="admin_users.php">Usuarios</a></li>
-            <li><a href="form.php">Reservar entradas</a></li>
             <li><a href="signout.php">Cerrar sesión</a></li>
         </ul>
     </nav>
@@ -91,7 +90,7 @@ $token = csrfToken();
                             <th>Correo</th>
                             <th>DNI</th>
                             <th>Rol</th>
-                            <th>Alta</th>
+                            <th>Ingreso</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -125,7 +124,7 @@ $token = csrfToken();
     </div>
 
     <footer>
-        &copy; <?= date('Y') ?> Teatro. Todos los derechos reservados.
+        &copy; <?= date('Y') ?> Teatro de Francesca Barbieri.
     </footer>
 
 </body>

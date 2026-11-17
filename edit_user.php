@@ -104,7 +104,7 @@ $token = csrfToken();
 
     <nav class="navbar">
         <a id="loguito" href="admin_users.php">
-            <img src="img/logo.png" alt="Logo del teatro" height="48">
+            <img src="img/logo.png" alt="Loguito" height="48">
         </a>
         <ul class="nav-links">
             <li><a href="admin_users.php">Usuarios</a></li>
