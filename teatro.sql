@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-11-2026 a las 20:31:17
+-- Tiempo de generación: 17-11-2026 a las 21:04:45
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -70,7 +70,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `user`, `dni`, `email`, `password_hash`, `rol`, `creado_en`, `archivado_en`) VALUES
-(1, 'franchu', '50322858', 'franchu@gmail.com', '$2y$10$waG/F/QjEFOQpxNGtFK1n.d5dQ68A6CqlCeeVc.65JFP4G0GDDoMe', 'usuario', '2026-11-17 19:27:38', NULL);
+(1, 'franchu', '50322858', 'franchu@gmail.com', '$2y$10$waG/F/QjEFOQpxNGtFK1n.d5dQ68A6CqlCeeVc.65JFP4G0GDDoMe', 'admin', '2026-11-17 19:27:38', NULL),
+(2, 'fran user', '5093049', 'franuser@gmail.com', '$2y$10$VL.Oiq9g.oPDYIlTUuS0SuWj1uRutoC7MWBKh9yyy.q1bzpNAjpQS', 'usuario', '2026-11-17 19:44:16', '2026-11-17 19:47:01'),
+(3, 'Jin', '6666675', 'jin@gmail.com', '$2y$10$2pktegkwXK5DiuNUAEbzzub810eGl8V0gb0lhzZBWg9aLN.uY/Mlu', 'usuario', '2026-11-17 20:03:16', NULL);
 
 --
 -- Índices para tablas volcadas
@@ -104,7 +106,7 @@ ALTER TABLE `reservas`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

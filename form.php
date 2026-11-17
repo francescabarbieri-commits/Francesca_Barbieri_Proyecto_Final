@@ -1,7 +1,13 @@
 <?php
 session_start();
 
-$obras       = ['Romeo y Julieta', 'La casa de Bernarda Alba', 'Hamlet'];
+// nombre de la obra => imagen
+$catalogo = [
+    'Romeo y Julieta'          => 'img/romeoyjuli.jpg',
+    'La casa de Bernarda Alba' => 'img/casabernarda.jpg',
+    'Hamlet'                   => 'img/hamlet.jpg',
+];
+$obras       = array_keys($catalogo);
 $horarios    = ['18:00', '20:30'];
 $ubicaciones = ['Platea', 'Palco', 'Pullman', 'Galería'];
 
@@ -110,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         } catch (Throwable $ex) {
             error_log($ex->getMessage());
-            $errores[] = 'No pudimos guardar tu reserva. Intentá de nuevo en unos minutos.';
+            $errores[] = 'No fue posible guardar tu reserva. Intentá de nuevo en unos minutos.';
         }
     }
 }
@@ -127,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <nav class="navbar">
         <a id="loguito" href="index.php">
-            <img src="img/logo.png" alt="Loguito" height="48">
+            <img src="img/logo.png" alt="Logo del teatro" height="48">
         </a>
         <ul class="nav-links">
             <li><a href="index.php">Inicio</a></li>
@@ -140,7 +146,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h1>¡Reserva confirmada!</h1>
         <p class="subtitulo">Te enviaremos los detalles a <?= e($reserva['email']) ?></p>
 
-        <article class="entrada">
+        <?php $afiche = $catalogo[$reserva['obra']] ?? null; ?>
+        <article class="entrada<?= $afiche ? ' con-afiche' : '' ?>">
+            <?php if ($afiche): ?>
+                <img class="entrada-afiche" src="<?= e($afiche) ?>" alt="Afiche de <?= e($reserva['obra']) ?>">
+            <?php endif; ?>
+
             <div class="entrada-cuerpo">
                 <p class="entrada-etiqueta">Entrada</p>
                 <h2 class="entrada-obra"><?= e($reserva['obra']) ?></h2>
@@ -194,9 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php endforeach; ?>
                 </ul>
             </div>
-        <?php endif; 
-        
-?>
+        <?php endif; ?>
 
         <form action="form.php" method="POST" id="reservaForm">
 
@@ -220,13 +229,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <legend>Función</legend>
 
                 <div class="control-group">
-                    <label for="obra">Obra*</label>
-                    <select id="obra" name="obra" required>
-                        <option value="">Elegí una obra</option>
-                        <?php foreach ($obras as $o): ?>
-                            <option value="<?= e($o) ?>" <?= $obra === $o ? 'selected' : '' ?>><?= e($o) ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                    <label>Obra*</label>
+                    <div class="obras-grid">
+                        <?php $i = 0; foreach ($catalogo as $nombreObra => $imagen): ?>
+                            <label class="obra-opcion" for="obra<?= $i ?>">
+                                <input type="radio" id="obra<?= $i ?>" name="obra"
+                                    value="<?= e($nombreObra) ?>" <?= $obra === $nombreObra ? 'checked' : '' ?> required>
+                                <img src="<?= e($imagen) ?>" alt="Afiche de <?= e($nombreObra) ?>">
+                                <span class="obra-titulo"><?= e($nombreObra) ?></span>
+                            </label>
+                        <?php $i++; endforeach; ?>
+                    </div>
                 </div>
 
                 <div class="control-group">
