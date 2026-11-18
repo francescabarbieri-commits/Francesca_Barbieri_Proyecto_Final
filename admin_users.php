@@ -6,19 +6,21 @@ require_once __DIR__ . '/conexion.php';
 $flash = $_SESSION['flash'] ?? null;
 unset($_SESSION['flash']);
 
-$buscar     = trim($_GET['buscar'] ?? '');
-$sql        = 'SELECT id, `user`, email, dni, rol, creado_en FROM users WHERE archivado_en IS NULL';
+$soloArchivados = ($_GET['vista'] ?? '') === 'archivados';
+$buscar = trim($_GET['buscar'] ?? '');
+$sql = 'SELECT id, `user`, email, dni, rol, creado_en, archivado_en FROM users WHERE archivado_en ';
+$sql .= $soloArchivados ? 'IS NOT NULL' : 'IS NULL';
 $parametros = [];
 
 if ($buscar !== '') {
     $sql .= ' AND (`user` LIKE :user OR dni LIKE :dni OR email LIKE :email)';
-    $termino    = '%' . addcslashes($buscar, '%_\\') . '%';
+    $termino = '%' . addcslashes($buscar, '%_\\') . '%';
     $parametros = ['user' => $termino, 'dni' => $termino, 'email' => $termino];
 }
 $sql .= ' ORDER BY id DESC';
 
 $usuarios = [];
-$error    = '';
+$error = '';
 
 try {
     $stmt = $conexion->prepare($sql);
@@ -53,11 +55,19 @@ $token = csrfToken();
     </nav>
 
     <div class="tarjeta-ancha">
-        <h1>Usuarios</h1>
+        <h1><?= $soloArchivados ? 'Usuarios archivados' : 'Usuarios activos' ?></h1>
         <p class="subtitulo">
             <?= $total === 1 ? '1 usuario' : $total . ' usuarios' ?>
             <?php if ($buscar !== ''): ?>
                 que coinciden con «<?= e($buscar) ?>»
+            <?php endif; ?>
+        </p>
+
+        <p>
+            <?php if ($soloArchivados): ?>
+                <a href="admin_users.php" class="btn-chico">Ver usuarios activos</a>
+            <?php else: ?>
+                <a href="admin_users.php?vista=archivados" class="btn-chico">Ver archivados</a>
             <?php endif; ?>
         </p>
 
@@ -72,16 +82,17 @@ $token = csrfToken();
         <?php endif; ?>
 
         <form method="GET" action="admin_users.php" class="busqueda">
+            <?php if ($soloArchivados): ?>
+                <input type="hidden" name="vista" value="archivados">
+            <?php endif; ?>
             <input type="search" name="buscar" maxlength="100" value="<?= e($buscar) ?>"
                 placeholder="Usuario, DNI o correo">
             <button type="submit" class="btn-guardar">Buscar</button>
         </form>
 
-<?php if ($total === 0): ?>
+        <?php if ($total === 0): ?>
             <p class="vacio">No hay usuarios para mostrar.</p>
-<?php else: 
-        
-?>
+        <?php else: ?>
             <div class="tabla-contenedor">
                 <table class="tabla-usuarios">
                     <thead>
@@ -90,7 +101,7 @@ $token = csrfToken();
                             <th>Correo</th>
                             <th>DNI</th>
                             <th>Rol</th>
-                            <th>Ingreso</th>
+                            <th><?= $soloArchivados ? 'Archivado' : 'Ingreso' ?></th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -101,16 +112,25 @@ $token = csrfToken();
                                 <td><?= e($u['email']) ?></td>
                                 <td><?= e($u['dni']) ?></td>
                                 <td><?= e($u['rol']) ?></td>
-                                <td><?= e(date('d/m/Y', strtotime($u['creado_en']))) ?></td>
+                                <td><?= e(date('d/m/Y', strtotime($soloArchivados ? $u['archivado_en'] : $u['creado_en']))) ?></td>
                                 <td>
                                     <div class="acciones">
-                                        <a href="edit_user.php?id=<?= (int)$u['id'] ?>" class="btn-chico">Editar</a>
-                                        <?php if ((int)$u['id'] !== (int)$_SESSION['usuario_id']): ?>
-                                            <form method="POST" action="archivar_user.php" class="form-inline"
-                                                onsubmit="return confirm('¿Archivar a este usuario?');">
+                                        <?php if (!$soloArchivados): ?>
+                                            <a href="edit_user.php?id=<?= (int)$u['id'] ?>" class="btn-chico">Editar</a>
+                                            <?php if ((int)$u['id'] !== (int)$_SESSION['usuario_id']): ?>
+                                                <form method="POST" action="archivar_user.php" class="form-inline"
+                                                    onsubmit="return confirm('¿Archivar a este usuario?');">
+                                                    <input type="hidden" name="id" value="<?= (int)$u['id'] ?>">
+                                                    <input type="hidden" name="csrf" value="<?= e($token) ?>">
+                                                    <button type="submit" class="btn-chico btn-peligro">Archivar</button>
+                                                </form>
+                                            <?php endif; ?>
+                                        <?php else: ?>
+                                            <form method="POST" action="reactivar_user.php" class="form-inline"
+                                                onsubmit="return confirm('¿Reactivar a este usuario?');">
                                                 <input type="hidden" name="id" value="<?= (int)$u['id'] ?>">
                                                 <input type="hidden" name="csrf" value="<?= e($token) ?>">
-                                                <button type="submit" class="btn-chico btn-peligro">Archivar</button>
+                                                <button type="submit" class="btn-chico">Reactivar</button>
                                             </form>
                                         <?php endif; ?>
                                     </div>
