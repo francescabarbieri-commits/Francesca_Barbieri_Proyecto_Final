@@ -1,4 +1,4 @@
-/* ===== Selección de obras con imagen (pegar al final de style.css) ===== */
+
 
 .obras-grid {
     display: grid;
@@ -27,7 +27,6 @@
     border-color: var(--acento);
 }
 
-/* Imagen con proporción de afiche */
 .obra-opcion img {
     display: block;
     width: 100%;
@@ -42,7 +41,7 @@
     line-height: 1.3;
 }
 
-/* Tarjeta seleccionada (el circulito sigue visible) */
+
 .obra-opcion:has(input:checked) {
     border-color: var(--acento);
     background: var(--telon);
@@ -53,7 +52,7 @@
     font-weight: 700;
 }
 
-/* Foco por teclado */
+
 .obra-opcion:has(input:focus-visible) {
     outline: 2px solid var(--acento);
     outline-offset: 2px;

@@ -1,28 +1,27 @@
 <?php
 session_start();
 
-// nombre de la obra => imagen
 $catalogo = [
     'Romeo y Julieta'          => 'img/romeoyjuli.jpg',
     'La casa de Bernarda Alba' => 'img/casabernarda.jpg',
     'Hamlet'                   => 'img/hamlet.jpg',
 ];
-$obras       = array_keys($catalogo);
-$horarios    = ['18:00', '20:30'];
-$ubicaciones = ['Platea', 'Palco', 'Pullman', 'Galería'];
+$obras= array_keys($catalogo);
+$horarios= ['18:00', '20:30'];
+$ubicaciones= ['Platea', 'Palco', 'Pullman', 'Galería'];
 
-$errores  = [];
-$mensaje  = '';
+$errores= [];
+$mensaje= '';
 
-$nombre        = '';
-$email         = '';
-$obra          = '';
-$fecha         = '';
-$horario       = '';
-$cantidad      = '';
-$ubicacion     = '';
-$accesibilidad = false;
-$comentarios   = '';
+$nombre= '';
+$email= '';
+$obra= '';
+$fecha= '';
+$horario= '';
+$cantidad= '';
+$ubicacion= '';
+$accesibilidad= false;
+$comentarios= '';
 
 $reserva = $_SESSION['reserva_ok'] ?? null;
 unset($_SESSION['reserva_ok']);
@@ -36,7 +35,7 @@ function fechaLarga(string $ymd): string
 {
     $dias  = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
     $meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio',
-              'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+            'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
     $f = new DateTime($ymd);
     return ucfirst($dias[(int)$f->format('w')]) . ' ' . $f->format('j')
         . ' de ' . $meses[(int)$f->format('n') - 1] . ' de ' . $f->format('Y');
