@@ -132,6 +132,14 @@ $token = csrfToken();
                                                 <input type="hidden" name="csrf" value="<?= e($token) ?>">
                                                 <button type="submit" class="btn-chico">Reactivar</button>
                                             </form>
+                                            <?php if ((int)$u['id'] !== (int)$_SESSION['usuario_id']): ?>
+                                                <form method="POST" action="delete_user.php" class="form-inline"
+                                                    onsubmit="return confirm('¿Eliminar definitivamente a este usuario? Esta acción no se puede deshacer.');">
+                                                    <input type="hidden" name="id" value="<?= (int)$u['id'] ?>">
+                                                    <input type="hidden" name="csrf" value="<?= e($token) ?>">
+                                                    <button type="submit" class="btn-chico btn-peligro">Eliminar</button>
+                                                </form>
+                                            <?php endif; ?>
                                         <?php endif; ?>
                                     </div>
                                 </td>
